@@ -1,4 +1,6 @@
-package co.istad.banking;
+package co.istad.banking.ui;
+
+import co.istad.banking.domain.SavingAccount;
 
 import java.util.Scanner;
 
@@ -8,6 +10,15 @@ public class BankingAppView {
 
     public BankingAppView() {
         scanner = new Scanner(System.in);
+
+        // init data for testing
+        SavingAccount savingAccount = new SavingAccount(
+                "88889999",
+                "CHAN CHHAYA",
+                10000.00,
+                0.05
+        );
+
     }
 
     public void run() {
@@ -16,7 +27,10 @@ public class BankingAppView {
             int enteredOption = enterMenuOption();
             switch (enteredOption) {
                 case 1 -> System.out.println("Deposit");
-                case 2 -> System.out.println("Withdraw");
+                case 2 -> {
+                    System.out.print("Enter amount: ");
+                    Double amount = Double.parseDouble(scanner.nextLine());
+                }
                 case 3 -> System.out.println("Check Balance");
                 case 4 -> System.exit(0);
                 default -> System.out.println("Invalid option");
