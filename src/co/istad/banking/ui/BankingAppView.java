@@ -1,5 +1,7 @@
 package co.istad.banking.ui;
 
+import co.istad.banking.domain.Account;
+import co.istad.banking.domain.Bank;
 import co.istad.banking.domain.SavingAccount;
 
 import java.util.Scanner;
@@ -7,18 +9,11 @@ import java.util.Scanner;
 public class BankingAppView {
 
     private final Scanner scanner;
+    private final Bank bank;
 
     public BankingAppView() {
         scanner = new Scanner(System.in);
-
-        // init data for testing
-        SavingAccount savingAccount = new SavingAccount(
-                "88889999",
-                "CHAN CHHAYA",
-                10000.00,
-                0.05
-        );
-
+        bank = new Bank();
     }
 
     public void run() {
@@ -28,13 +23,38 @@ public class BankingAppView {
             switch (enteredOption) {
                 case 1 -> System.out.println("Deposit");
                 case 2 -> {
-                    System.out.print("Enter amount: ");
-                    Double amount = Double.parseDouble(scanner.nextLine());
+                    System.out.print("Enter account number: ");
+                    String accountNumber = scanner.nextLine();
+
+                    Account account = bank.findAccount(accountNumber);
+
+                    if (account == null) {
+                        System.out.println("Account not found");
+                    } else {
+                        System.out.print("Enter amount: ");
+                        Double amount = Double.parseDouble(scanner.nextLine());
+                        account.withdrawal(amount);
+                    }
                 }
-                case 3 -> System.out.println("Check Balance");
+                case 3 -> {
+                    System.out.print("Enter account number: ");
+                    String accountNumber = scanner.nextLine();
+
+                    Account account = bank.findAccount(accountNumber);
+
+                    if (account == null) {
+                        System.out.println("Account not found");
+                    } else {
+                        account.checkBalance();
+                    }
+                }
                 case 4 -> System.exit(0);
                 default -> System.out.println("Invalid option");
             }
+
+            System.out.print("Press enter to continue...");
+            scanner.nextLine();
+
         } while (true);
     }
 

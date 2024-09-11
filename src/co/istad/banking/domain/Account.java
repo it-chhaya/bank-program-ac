@@ -30,6 +30,12 @@ public abstract class Account {
         }
     }
 
+    public void checkBalance() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Owner: " + accountOwnerName);
+        System.out.println("Balance: $ " + balance);
+    }
+
     public abstract void withdrawal(Double amount);
 
 }
