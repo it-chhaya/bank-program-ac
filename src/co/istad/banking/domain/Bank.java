@@ -1,5 +1,7 @@
 package co.istad.banking.domain;
 
+import co.istad.banking.exception.AccountNotFoundException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +31,13 @@ public class Bank {
         bankAccounts.add(checkingAccount);
     }
 
-    public Account findAccount(String accountNumber) {
+    public Account findAccount(String accountNumber) throws AccountNotFoundException {
         for (Account account : bankAccounts) {
             if (account.getAccountNumber().equals(accountNumber)) {
                 return account;
             }
         }
-        return null;
+        throw new AccountNotFoundException("Account not found");
     }
 
 }

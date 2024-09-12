@@ -3,6 +3,7 @@ package co.istad.banking.ui;
 import co.istad.banking.domain.Account;
 import co.istad.banking.domain.Bank;
 import co.istad.banking.domain.SavingAccount;
+import co.istad.banking.exception.AccountNotFoundException;
 
 import java.util.Scanner;
 
@@ -21,31 +22,42 @@ public class BankingAppView {
             displayWelcome();
             int enteredOption = enterMenuOption();
             switch (enteredOption) {
-                case 1 -> System.out.println("Deposit");
+                case 1 -> {
+                    System.out.print("Enter account number: ");
+                    String accountNumber = scanner.nextLine();
+
+                    try {
+                        Account account = bank.findAccount(accountNumber);
+                        System.out.print("Enter amount: ");
+                        Double amount = Double.parseDouble(scanner.nextLine());
+                        account.deposit(amount);
+                    } catch (AccountNotFoundException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                }
                 case 2 -> {
                     System.out.print("Enter account number: ");
                     String accountNumber = scanner.nextLine();
 
-                    Account account = bank.findAccount(accountNumber);
-
-                    if (account == null) {
-                        System.out.println("Account not found");
-                    } else {
+                    try {
+                        Account account = bank.findAccount(accountNumber);
                         System.out.print("Enter amount: ");
                         Double amount = Double.parseDouble(scanner.nextLine());
                         account.withdrawal(amount);
+                    } catch (AccountNotFoundException e) {
+                        System.out.println(e.getMessage());
                     }
                 }
                 case 3 -> {
                     System.out.print("Enter account number: ");
                     String accountNumber = scanner.nextLine();
 
-                    Account account = bank.findAccount(accountNumber);
-
-                    if (account == null) {
-                        System.out.println("Account not found");
-                    } else {
+                    try {
+                        Account account = bank.findAccount(accountNumber);
                         account.checkBalance();
+                    } catch (AccountNotFoundException e) {
+                        System.out.println(e.getMessage());
                     }
                 }
                 case 4 -> System.exit(0);
